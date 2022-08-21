@@ -61,7 +61,7 @@ component {
 	// Auto-map models
 	this.autoMapModels      = true;
 	// Module Dependencies
-	this.dependencies       = [];
+	this.dependencies       = ["errorFilter", "sentry"];
 
 	/**
 	 * Configure the module
@@ -72,23 +72,28 @@ component {
 
 		// module settings - stored in modules.name.settings
 		settings = {
+			enableLogBoxAppender: false,
+			addAppenderToRoot: false,
+			disableSentryAppender: false,
+			levelMin: 0,
+			levelMax: 4,
 			appenders : {
 				"screenDump"    : { "class" : "scribe.models.screenDump" },
-				"screenAbort"   : { class : "scribe.models.screenAbort" },
+				"screenAbort"   : { "class" : "scribe.models.screenAbort" },
 				"scribeConsole" : { "class" : "scribe.models.systemOut" },
 				"pusher"        : { "class" : "scribe.models.pusher", "properties" : {} },
 				"sentry"        : { "class" : "scribe.models.sentry" },
-				"toaster"       : { class : "scribe.models.toaster" }
+				"toaster"       : { "class" : "scribe.models.toaster" }
 			},
 			rules : {
 				"production"  : "",
-				"development" : [ "screen" ],
-				"testing"     : [ "screen" ],
-				"blarg"       : [ "toaster" ]
+				"development" : [ "screenDump" ],
+				"testing"     : [ "screenDump" ]
 			},
 			"ruleDefinitions" : [ "property:environment" ],
 			"cleanErrors"     : true,
-			"mandatoryKeys"   : { "sentry" : "message" }
+			"mandatoryKeys"   : { "sentry" : "message" },
+			"doNotAddList" : ["scribeAppender","sentry_appender"]
 		};
 
 		// Layout Settings
@@ -111,16 +116,26 @@ component {
 		controller.getInterceptorService().unregister( interceptorName = "ModuleConfig:sentry" );
 		controller
 			.getInterceptorService()
-			.registerInterceptor( interceptorClass = "scribe.interceptors.scribeInterceptor" );
+			.registerInterceptor( interceptorClass = "#moduleMapping#.interceptors.scribeInterceptor" );
+
+// Load the LogBox Appenders
+		if( settings.enableLogBoxAppender ){
+			loadAppenders();
+		}
 	}
 
 	function afterAspectsLoad(){
-		logBox.getLoggerRegistry().ROOT.removeAppender( "sentry_appender" );
-		var rootConfig = logBox.getConfig().getRoot();
-		if ( rootConfig.appenders.listfindNoCase( "sentry_appender" ) > 0 ) {
-			rootConfig.appenders = rootConfig.appenders.listDeleteAt(
-				rootConfig.appenders.listfindNoCase( "sentry_appender" )
-			);
+		if(settings.disableSentryAppender) {
+				logBox.getLoggerRegistry().ROOT.removeAppender("sentry_appender");
+			var rootConfig = logBox.getConfig().getRoot();
+			if (rootConfig.appenders.listfindNoCase("sentry_appender") > 0) {
+				rootConfig.appenders = rootConfig.appenders.listDeleteAt(
+					rootConfig.appenders.listfindNoCase("sentry_appender")
+					);
+			}
+		}
+		if(settings.addAppenderToRoot) {
+			logBox.getLoggerRegistry()["Root"].addAppender(logbox.getappenderRegistry().scribeAppender);
 		}
 	}
 
@@ -128,6 +143,34 @@ component {
 	 * Fired when the module is unregistered and unloaded
 	 */
 	function onUnload(){
+	}
+
+//**************************************** PRIVATE ************************************************//
+
+/**
+ * Load LogBox Appenders
+ */
+	private function loadAppenders(){
+// Get config
+		var logBoxConfig 	= logBox.getConfig();
+		var rootConfig 		= '';
+
+// Register tracer appender
+		rootConfig = logBoxConfig.getRoot();
+		logBoxConfig.appender(
+			name 		= 'scribeAppender',
+			class 		= '#moduleMapping#.models.ScribeAppender',
+			levelMin 	= settings.levelMin,
+			levelMax 	= settings.levelMax
+			);
+		logBoxConfig.root(
+			levelMin = rootConfig.levelMin,
+			levelMax = rootConfig.levelMax,
+			appenders= listAppend( rootConfig.appenders, 'scribeAppender')
+			);
+
+// Store back config
+		logBox.configure( logBoxConfig );
 	}
 
 }

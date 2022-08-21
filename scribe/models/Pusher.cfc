@@ -46,7 +46,7 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 
 				application.Collections = createObject( "java", "java.util.Collections" );
 			} catch ( any err ) {
-				writeDump( err );
+				//systemOutput("Could Not create the Pusher Java componet. Make sure that it is in the /lib folder");
 			}
 		}
 	}

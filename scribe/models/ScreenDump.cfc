@@ -12,4 +12,10 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 		doDump( logevent.getExtraInfo() );
 	}
 
+	void function doDump( required any item ){
+		writeDump( item );
+	}
+	void function doAbort(){
+		abort;
+	}
 }

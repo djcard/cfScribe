@@ -149,7 +149,7 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 		var finalClean   = !isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors();
 		var cleanedError = !isSimpleValue( arguments.extraInfo ) && finalClean ? cleanError( extraInfo ) : arguments.extraInfo;
 
-		if ( !cleanedError.keyExists( "message" ) ) {
+		if ( isStruct(cleanedError) && !cleanedError.keyExists( "message" ) ) {
 			cleanedError[ "message" ] = "";
 		}
 
@@ -158,7 +158,7 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 			extraInfo = cleanedError,
 			severity  = severitylevel
 		);
-		writeDump( logEvent )
+		writeDump( var=logEvent, label="from scribe" )
 		targetList.each( function( item ){
 			if ( variables.mandatoryKeys.keyExists( item ) ) {
 				logEvent.setExtrainfo( fillInKeys( item, logEvent.getExtrainfo() ) );
