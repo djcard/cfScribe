@@ -1,0 +1,66 @@
+{
+    "author":"Dan Card",
+    "bugs":"https://github.com/djcard/cfScribe/issues",
+    "changelog":"",
+    "contributors":[
+        "John Wilson"
+    ],
+    "dependencies":{
+        "sentry":"^1.5.19",
+        "errorFilter":"^0.0.4"
+    },
+    "description":"",
+    "devDependencies":{},
+    "documentation":"",
+    "homepage":"",
+    "ignore":[
+        "**/.*",
+        "/test/",
+        "/tests/"
+    ],
+    "installPaths":{
+        "sentry":"modules/sentry/",
+        "errorFilter":"modules/errorFilter/"
+    },
+    "instructions":"",
+    "keywords":[],
+    "license":[
+        {
+            "type":"",
+            "URL":""
+        }
+    ],
+    "location":"ForgeboxStorage",
+    "name":"CFScribe",
+    "private":false,
+    "projectURL":"",
+    "repository":{
+        "type":"git",
+        "URL":"https://github.com/djcard/cfScribe"
+    },
+    "scripts":{},
+    "shortDescription":"An extension for LogBox that allows for error filtering and advanced routing for messages and logging.",
+    "slug":"cfscribe",
+    "testbox":{
+        "bundles":"",
+        "directory":"tests.specs",
+        "excludes":"",
+        "labels":"",
+        "options":{},
+        "recurse":true,
+        "reporter":"",
+        "runner":[
+            {
+                "default":""
+            }
+        ],
+        "testBundles":"",
+        "testSpecs":"",
+        "testSuites":"",
+        "verbose":true,
+        "watchDelay":500,
+        "watchPaths":"**.cfc"
+    },
+    "type":"modules",
+    "version":"0.0.3"
+}
