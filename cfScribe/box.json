@@ -7,7 +7,7 @@
     ],
     "dependencies":{
         "sentry":"^1.5.19",
-        "errorFilter":"^0.0.5"
+        "errorFilter":"^0.0.6"
     },
     "description":"",
     "devDependencies":{},
