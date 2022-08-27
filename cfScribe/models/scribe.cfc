@@ -72,8 +72,7 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 			).setLogBox( this )
 				.setColdBox( variables.coldbox )
 				.setWireBox( variables.wirebox )
-				.setInitialized( true )
-				.setEnvironment( getEnvironment() );
+				.setInitialized( true );
 			addAppender( newAppender );
 		} );
 	}
@@ -177,14 +176,13 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 		return retme;
 	}
 
-/***
-* Ensures that a certain keys are present in the resultant struct to prevent errors downstream
-*
-* @appenderName The name of the appender to reference any mandatory keys
-* @base The struct which needs the keys added
-*
-**/
-	function fillInKeys(required string appenderName, struct base={} ){
+	/***
+	 * Ensures that a certain keys are present in the resultant struct to prevent errors downstream
+	 *
+	 * @appenderName The name of the appender to reference any mandatory keys
+	 * @base         The struct which needs the keys added
+	 **/
+	function fillInKeys( required string appenderName, struct base = {} ){
 		var keyList = variables.mandatoryKeys.keyExists( appenderName ) ? variables.mandatoryKeys[ appenderName ] : "";
 		keyList
 			.ListToArray()
@@ -217,17 +215,17 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 	array function obtainDynamicTargets( args ){
 		var targets     = [];
 		var ruleProcess = [ rules ];
-		var rp=rules;
+		var rp          = rules;
 		ruleDefinitions.each( function( item, idx ){
 			var nextkey = processNextValue( item, args );
-			var res={};
+			var res     = {};
 
-			if(isStruct(rp) && toString( nextkey ).len()){
-				res = 	extractRules( nextkey, rp )
-				if(isStruct(res)){
-					rp=res;
-				} else if(isArray(res)){
-					targets.append(res,true);
+			if ( isStruct( rp ) && toString( nextkey ).len() ) {
+				res = extractRules( nextkey, rp )
+				if ( isStruct( res ) ) {
+					rp = res;
+				} else if ( isArray( res ) ) {
+					targets.append( res, true );
 					continue;
 				}
 			}
@@ -236,12 +234,12 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 		return targets;
 	}
 
-/***
-* Accepts one rule definition and evaluates it to determine the next level rule
-*
-* @key The next rule definition to evaluate
-* @args
-**/
+	/***
+	 * Accepts one rule definition and evaluates it to determine the next level rule
+	 *
+	 * @key  The next rule definition to evaluate
+	 * @args
+	 **/
 	function processNextValue( required any key, required struct args ){
 		if ( isClosure( key ) ) {
 			return key();
@@ -296,10 +294,10 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 		return getErrorFilter().run( err );
 	}
 
-/***
-* Returns a struct of all the java.lang.system variables with uppercase keys
-*
-**/
+	/***
+	 * Returns a struct of all the java.lang.system variables with uppercase keys
+	 *
+	 **/
 	struct function cleanEnvVars(){
 		var retme  = {};
 		var allEnv = createObject( "java", "java.lang.System" ).getEnv();

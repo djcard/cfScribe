@@ -39,7 +39,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 
 					expect( testme[ 1 ].left( 1 ) ).tobe( "|" );
 					expect( testme[ 1 ].right( 1 ) ).tobe( "|" );
-					expect( testme[ 1 ].mid( labelWidth, 1 ) ).tobe( "|" );
+					expect( testme[ 1 ].mid( labelWidth + 1, 1 ) ).tobe( "|" );
 				} );
 			}
 		);

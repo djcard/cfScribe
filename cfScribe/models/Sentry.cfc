@@ -3,7 +3,7 @@
  *
  **/
 
-component extends="scribe.models.BaseScribeAppender" accessors="true" {
+component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 
 	property name="wirebox"       inject="wirebox";
 	property name="sentryService" inject="SentryService@sentry";

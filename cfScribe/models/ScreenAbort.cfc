@@ -20,4 +20,11 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 		doAbort();
 	}
 
+	void function doDump( required any item ){
+		writeDump( item );
+	}
+	void function doAbort(){
+		abort;
+	}
+
 }

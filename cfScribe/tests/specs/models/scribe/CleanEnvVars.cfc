@@ -28,7 +28,18 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 				} );
 				it( "Should have the same keys as the system env", function(){
 					testme = scribe.cleanEnvVars();
-					expect( testme.keyArray().sort("textnocase").tolist() ).tobe( createObject( "java", "java.lang.System" ).getEnv().keyArray().sort("textnocase").tolist() );
+					expect(
+						testme
+							.keyArray()
+							.sort( "textnocase" )
+							.tolist()
+					).tobe(
+						createObject( "java", "java.lang.System" )
+							.getEnv()
+							.keyArray()
+							.sort( "textnocase" )
+							.tolist()
+					);
 				} );
 			}
 		);

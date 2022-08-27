@@ -1,9 +1,9 @@
-component extends="scribe.models.BaseScribeAppender" accessors="true" {
+component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 
 	property name="cfmlEngine" default="lucee";
 	property name="environment" inject="coldbox:setting:environment";
 
-	function init( string name = "console", struct properties = {} ){
+	function init( string name = "scribeConsole", struct properties = {} ){
 		super.init( name );
 		return this;
 	}
@@ -20,7 +20,7 @@ component extends="scribe.models.BaseScribeAppender" accessors="true" {
 			] );
 		} else {
 			try {
-				var finalErr = cleanErrors ? cleanError( logEvent.getExtraInfo().type, logEvent.getExtraInfo() ) : logEvent.getExtraInfo();
+				var finalErr = logEvent.getExtraInfo();
 
 				var contentWidth = calcTableWidth( logEvent );
 				var labelWidth   = 20;
@@ -54,7 +54,7 @@ component extends="scribe.models.BaseScribeAppender" accessors="true" {
 						} );
 					} else {
 						if (
-							isStruct( logEvent.getExtraInfo() ) &&
+							isStruct( finalErr ) &&
 							finalErr.keyExists( item ) &&
 							trim( finalErr[ item ].toString() ).len()
 						) {
@@ -77,7 +77,13 @@ component extends="scribe.models.BaseScribeAppender" accessors="true" {
 		}
 	}
 
-	function extraInfoEmpty( extraInfo ){
+
+	/***
+	 * Determines if the submitted struct is empty or not
+	 *
+	 * @extraInfo the stuct to determine if empty
+	 **/
+	function extraInfoEmpty( required struct extraInfo ){
 		var skipFields = [ "message", "filterClass" ];
 		if ( isSimpleValue( arguments.extraInfo ) ) {
 			return true;
@@ -111,23 +117,27 @@ component extends="scribe.models.BaseScribeAppender" accessors="true" {
 	){
 		if ( isSimpleValue( arguments.line ) ) {
 			writeToConsole( headerLine( arguments.line, arguments.totalWidth + 1 ) );
-		} else {
-			writeToConsole(
-				labelledLine(
-					"Template",
-					arguments.labelWidth,
-					arguments.line.template,
-					arguments.totalWidth + 1
-				)
-			);
-			writeToConsole(
-				labelledLine(
-					"Line",
-					arguments.labelWidth,
-					arguments.line.line.toString().listFirst( "." ),
-					arguments.totalWidth + 1
-				)
-			);
+		} else if ( isStruct( arguments.line ) ) {
+			if ( arguments.line.keyExists( "template" ) ) {
+				writeToConsole(
+					labelledLine(
+						"Template",
+						arguments.labelWidth,
+						arguments.line.template,
+						arguments.totalWidth + 1
+					)
+				);
+			};
+			if ( arguments.line.keyExists( "line" ) ) {
+				writeToConsole(
+					labelledLine(
+						"Line",
+						arguments.labelWidth,
+						arguments.line.line.toString().listFirst( "." ),
+						arguments.totalWidth + 1
+					)
+				);
+			};
 			if ( arguments.line.keyExists( "codePrintPlain" ) ) {
 				arguments.line.codePrintPlain
 					.listToArray( chr( 10 ) )
@@ -141,8 +151,8 @@ component extends="scribe.models.BaseScribeAppender" accessors="true" {
 							)
 						);
 					} );
-				writeToConsole( [ "|" & charSpacing( ".", arguments.totalWidth - 2 ) & "|" ] );
 			}
+			writeToConsole( [ "|" & charSpacing( ".", arguments.totalWidth - 2 ) & "|" ] );
 		}
 	}
 
@@ -170,7 +180,7 @@ component extends="scribe.models.BaseScribeAppender" accessors="true" {
 
 
 	/**
-	 * Writes to the conole using systemOutput (lucee) or dump(output='console') (Adobe)
+	 * Writes to the console using systemOutput (lucee) or dump(output='console') (Adobe)
 	 *
 	 **/
 	void function writeToConsole( required array content ){
@@ -193,7 +203,7 @@ component extends="scribe.models.BaseScribeAppender" accessors="true" {
 			isSimpleValue( message )
 			 ? [
 				"| "
-				& label & charSpacing( " ", arguments.labelWidth - label.len() - 3 )
+				& label & charSpacing( " ", arguments.labelWidth - label.len() - 2 )
 				& "| "
 				& message.toString() & charSpacing( " ", messageWidth - message.toString().len() - 3 )
 				& "|"
@@ -243,7 +253,13 @@ component extends="scribe.models.BaseScribeAppender" accessors="true" {
 		return length;
 	}
 
-	function charSpacing( char, num ){
+	/***
+	 * Returns a string consisting the submitted number of the submitted characters
+	 *
+	 * @char The character to return
+	 * @num  How many of the submitted character to return
+	 **/
+	function charSpacing( required string char, required numeric num ){
 		var retme = "";
 		for ( var x = 1; x <= arguments.num; x = x + 1 ) {
 			retme = retme & char;

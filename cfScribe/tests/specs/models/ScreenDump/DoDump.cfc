@@ -24,10 +24,10 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 			labels = "automated",
 			body   = function(){
 				beforeEach( function(){
-					//testme = testObj.logMessage( fakeError );
+					// testme = testObj.logMessage( fakeError );
 				} );
 				it( "only dumps message. Not testable", function(){
-					expect(true).tobeTrue();
+					expect( true ).tobeTrue();
 				} );
 			}
 		);
