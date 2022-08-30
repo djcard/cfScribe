@@ -245,7 +245,7 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 			return key();
 		} else {
 			var action = key.listGetAt( 1, ":" );
-			var name   = key.listGetAt( 2, ":" );
+			var name   = key.listlen( ":" ) gt 1 ? key.listGetAt( 2, ":" ) : action;
 
 			if ( action eq "env" ) {
 				return getEnvVars().keyExists( name ) ? getEnvVars()[ name ] : "";

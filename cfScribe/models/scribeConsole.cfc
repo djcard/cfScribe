@@ -55,8 +55,7 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 					} else {
 						if (
 							isStruct( finalErr ) &&
-							finalErr.keyExists( item ) &&
-							trim( finalErr[ item ].toString() ).len()
+							finalErr.keyExists( item )
 						) {
 							writeToConsole(
 								labelledLine(

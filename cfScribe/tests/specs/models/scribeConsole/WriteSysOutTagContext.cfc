@@ -26,8 +26,8 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 				beforeEach( function(){
 					testObj = createMock( object = getInstance( "scribeConsole@cfscribe" ) );
 					testObj.$( method = "writeToConsole" );
-					testObj.$( method = "labelledLine",returns=[] );
-					testObj.$( method = "charSpacing",returns="" );
+					testObj.$( method = "labelledLine", returns = [] );
+					testObj.$( method = "charSpacing", returns = "" );
 					testObj.$(
 						method   = "headerLine",
 						callback = function(){
@@ -61,23 +61,23 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 				it( "if a struct is submitted with a template key, run writeToConsole and labelledLine 1x ", function(){
 					var fakeSub = mockdata( $num = 1, $type = "words:5" )[ 1 ];
 
-					testObj.writeSysOutTagContext( {template:""}, 50, 100 );
-						expect( testObj.$count( "writeToConsole" ) ).toBe( 2 );
-						expect( testObj.$count( "labelledLine" ) ).toBe( 1 );
+					testObj.writeSysOutTagContext( { template : "" }, 50, 100 );
+					expect( testObj.$count( "writeToConsole" ) ).toBe( 2 );
+					expect( testObj.$count( "labelledLine" ) ).toBe( 1 );
 				} );
 				it( "if a struct is submitted with a line key, run writeToConsole and labelledLine 1x ", function(){
 					var fakeSub = mockdata( $num = 1, $type = "words:5" )[ 1 ];
 
-					testObj.writeSysOutTagContext( {line:""}, 50, 100 );
-						expect( testObj.$count( "writeToConsole" ) ).toBe( 2 );
-						expect( testObj.$count( "labelledLine" ) ).toBe( 1 );
+					testObj.writeSysOutTagContext( { line : "" }, 50, 100 );
+					expect( testObj.$count( "writeToConsole" ) ).toBe( 2 );
+					expect( testObj.$count( "labelledLine" ) ).toBe( 1 );
 				} );
 				it( "if a struct is submitted with a codePrintPlain key, run writeToConsole 1x + 1 per line in the key   and labelledLine 1x per line in the key ", function(){
 					var fakeSub = mockdata( $num = 1, $type = "words:5" )[ 1 ];
 
-					testObj.writeSysOutTagContext( {codePrintPlain:"a#chr(10)#B"}, 50, 100 );
-						expect( testObj.$count( "writeToConsole" ) ).toBe( 3 );
-						expect( testObj.$count( "labelledLine" ) ).toBe( 2 );
+					testObj.writeSysOutTagContext( { codePrintPlain : "a#chr( 10 )#B" }, 50, 100 );
+					expect( testObj.$count( "writeToConsole" ) ).toBe( 3 );
+					expect( testObj.$count( "labelledLine" ) ).toBe( 2 );
 				} );
 			}
 		);

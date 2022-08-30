@@ -72,8 +72,6 @@ component {
 
 		// module settings - stored in modules.name.settings
 		settings = {
-			enableLogBoxAppender  : false,
-			addAppenderToRoot     : false,
 			disableSentryAppender : false,
 			levelMin              : 0,
 			levelMax              : 4,
@@ -90,7 +88,7 @@ component {
 				"development" : [ "screenDump" ],
 				"testing"     : [ "screenDump" ]
 			},
-			"ruleDefinitions" : [ "property:environment" ],
+			"ruleDefinitions" : [ "env:environment" ],
 			"cleanErrors"     : true,
 			"mandatoryKeys"   : { "sentry" : "message" },
 			"doNotAddList"    : [ "scribeAppender", "sentry_appender" ]
@@ -113,15 +111,12 @@ component {
 	 * Fired when the module is registered and activated.
 	 */
 	function onLoad(){
-		controller.getInterceptorService().unregister( interceptorName = "ModuleConfig:sentry" );
+		if ( settings.disableSentryAppender ) {
+			controller.getInterceptorService().unregister( interceptorName = "ModuleConfig:sentry" );
+		}
 		controller
 			.getInterceptorService()
 			.registerInterceptor( interceptorClass = "#moduleMapping#.interceptors.scribeInterceptor" );
-
-		// Load the LogBox Appenders
-		if ( settings.enableLogBoxAppender ) {
-			loadAppenders();
-		}
 	}
 
 	function afterAspectsLoad(){
@@ -146,31 +141,5 @@ component {
 	}
 
 	// **************************************** PRIVATE ************************************************//
-
-	/**
-	 * Load LogBox Appenders
-	 */
-	private function loadAppenders(){
-		// Get config
-		var logBoxConfig = logBox.getConfig();
-		var rootConfig   = "";
-
-		// Register tracer appender
-		rootConfig = logBoxConfig.getRoot();
-		logBoxConfig.appender(
-			name     = "scribeAppender",
-			class    = "#moduleMapping#.models.ScribeAppender",
-			levelMin = settings.levelMin,
-			levelMax = settings.levelMax
-		);
-		logBoxConfig.root(
-			levelMin  = rootConfig.levelMin,
-			levelMax  = rootConfig.levelMax,
-			appenders = listAppend( rootConfig.appenders, "scribeAppender" )
-		);
-
-		// Store back config
-		logBox.configure( logBoxConfig );
-	}
 
 }
