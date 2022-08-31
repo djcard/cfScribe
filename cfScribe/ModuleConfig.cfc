@@ -129,9 +129,6 @@ component {
 				);
 			}
 		}
-		if ( settings.addAppenderToRoot ) {
-			logBox.getLoggerRegistry()[ "Root" ].addAppender( logbox.getappenderRegistry().scribeAppender );
-		}
 	}
 
 	/**
