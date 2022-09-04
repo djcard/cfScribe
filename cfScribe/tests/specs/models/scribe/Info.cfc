@@ -55,7 +55,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 							expect( arguments[ "4" ] ).tobeTypeOf( "array" );
 							expect( arguments[ "5" ] ).tobe( testReturn );
 							expect( arguments[ "6" ] ).tobe( true );
-							expect( arguments.len() ).tobe( 6 );
+							expect( arguments.len() ).tobe( 7 );
 						}
 					);
 					testme = scribe.info(
@@ -97,6 +97,59 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 						}
 					);
 					testme = scribe.info( message, extraInfo );
+				} );
+
+
+
+
+
+				it( "If an argument collection is submitted, it should pass all arguments and all values from the argument collection append to obtainDynamicTargets", function(){
+					var appendedStuct = {
+						"#mockData( $num = 1, $type = "words:1" )[ 1 ]#" : mockData( $num = 1, $type = "words:1" )[ 1 ]
+					};
+					scribe.$(
+						method   = "logMessage",
+						callBack = function(){
+							var testme = arguments;
+							expect( arguments[ 7 ] ).tobetypeof( "struct" );
+							appendedStuct
+								.keyArray()
+								.each( function( item ){
+									expect( testme[ 7 ] ).tohaveKey( item );
+									expect( testme[ 7 ][ item ] ).tobe( appendedStuct[ item ] );
+								} );
+							return [];
+						}
+					);
+					testme = scribe.info(
+						message            = " **************** This one *************************** ",
+						extraInfo          = {},
+						severity           = "6",
+						argumentCollection = appendedStuct
+					);
+					expect( scribe.$count( "logMessage" ) ).tobe( 1 );
+				} );
+				it( "If the arguments are overloaded, the overloaded arguments should be sent to obtainDynamicTargets", function(){
+					var key  = "#mockData( $num = 1, $type = "words:1" )[ 1 ]#";
+					var valu = mockData( $num = 1, $type = "words:1" )[ 1 ];
+
+					scribe.$(
+						method   = "logMessage",
+						callBack = function(){
+							var testme = arguments;
+							expect( arguments[ 7 ] ).tobetypeof( "struct" );
+							expect( testme[ 7 ] ).tohaveKey( key );
+							expect( testme[ 7 ][ key ] ).tobe( valu );
+							return [];
+						}
+					);
+					testme = scribe.info(
+						message   = " **************** This one *************************** ",
+						extraInfo = {},
+						severity  = "6",
+						"#key#"   = valu
+					);
+					expect( scribe.$count( "logMessage" ) ).tobe( 1 );
 				} );
 			}
 		);

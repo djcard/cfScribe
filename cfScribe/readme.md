@@ -1,9 +1,13 @@
+#CFScribe
 
+Please visit the full documents at [https://cfscribe.ortusbooks.com/](https://cfscribe.ortusbooks.com/)
 
 
 
 
 ### ChangeLog
+
+0.0.7 - updated to use ErrorFilter 0.0.9, added argumentCollection to log, logMessage, fatal, error, warn, info and debug calls. Also included the "argument:name" ruleDefinition parser.  
 
 0.0.6 - Fixed bug in scribeConsole which automatically filtered out blank lines whether that setting was true or false. 
         Removed unnecessary settings from moduleConfig

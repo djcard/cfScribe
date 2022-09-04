@@ -108,12 +108,13 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 	 **/
 
 	any function log(
-		string message   = "",
-		any severity     = 3,
-		struct extraInfo = {},
+		string message = "",
+		any severity   = 3,
+		any extraInfo  = {},
 		array appenderList,
 		string title = "",
-		string cleanError
+		string cleanError,
+		struct argumentCollection = {}
 	){
 		return logMessage(
 			arguments.message,
@@ -121,7 +122,8 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 			arguments.extraInfo,
 			arguments.appenderList ?: arguments.appenderList,
 			arguments.title,
-			arguments.cleanError ?: arguments.cleanError
+			arguments.cleanError ?: arguments.cleanError,
+			arguments
 		);
 	}
 
@@ -136,12 +138,13 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 	 * @cleanError    whether to override the default cleanError Value
 	 **/
 	any function logMessage(
-		string message   = "",
-		any severity     = 3,
-		struct extraInfo = {},
+		string message = "",
+		any severity   = 3,
+		any extraInfo  = {},
 		array appenderList,
 		string title = "",
-		boolean cleanError
+		boolean cleanError,
+		argumentCollection = {}
 	){
 		var retme         = {};
 		var severitylevel = transformSeverity( arguments.severity );
@@ -150,10 +153,6 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 		 : obtainDynamicTargets( arguments );
 		var finalClean   = !isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors();
 		var cleanedError = !isSimpleValue( arguments.extraInfo ) && finalClean ? variables.cleanError( extraInfo ) : arguments.extraInfo;
-
-		if ( isStruct( cleanedError ) && !cleanedError.keyExists( "message" ) ) {
-			cleanedError[ "message" ] = "";
-		}
 
 		var logEvent = new coldbox.system.logging.LogEvent(
 			message   = arguments.message,
@@ -206,11 +205,7 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 	/**
 	 * Parses the error parameters and the rules to return the endpoints for logging
 	 *
-	 * @env         The environment in which this server is running. Ultimately defaults to the env setting
-	 * @severity    The severity or severity of the error. Defaults to 3
-	 * @forcelog    One of either 'forceLog' or 'noForceLog' depending on whether or not the 'X-Import-Debug' header is present in the call
-	 * @notifyAdmin Whether or not to notify the admin of the error
-	 * @notifyLocal Whether or not to notify the user of the error
+	 * @args The arguments passed into LogMessage
 	 **/
 	array function obtainDynamicTargets( args ){
 		var targets     = [];
@@ -218,7 +213,8 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 		var rp          = rules;
 		ruleDefinitions.each( function( item, idx ){
 			var nextkey = processNextValue( item, args );
-			var res     = {};
+
+			var res = {};
 
 			if ( isStruct( rp ) && toString( nextkey ).len() ) {
 				res = extractRules( nextkey, rp )
@@ -267,6 +263,8 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 				return obtainHeaderTF( name );
 			} else if ( action eq "severity" ) {
 				return transformSeverity( args.keyExists( "severity" ) ? args.severity : name );
+			} else if ( action eq "argument" ) {
+				return args.keyExists( name ) ? args[ name ] : "";
 			} else {
 				return "";
 			}
@@ -346,11 +344,12 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 	 * @cleanError    whether to override the default cleanError Value
 	 **/
 	function debug(
-		required string message   = "",
-		required struct extraInfo = {},
+		required string message = "",
+		required any extraInfo  = {},
 		array appenderList,
 		title = "",
-		cleanError
+		cleanError,
+		argumentCollection = {}
 	){
 		return logMessage(
 			arguments.message,
@@ -358,7 +357,8 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 			arguments.extraInfo,
 			arguments.appenderList ?: arguments.appenderList,
 			arguments.title,
-			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors()
+			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
+			arguments
 		);
 	}
 
@@ -372,11 +372,12 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 	 * @cleanError    whether to override the default cleanError Value
 	 **/
 	function info(
-		required string message   = "",
-		required struct extraInfo = {},
+		required string message = "",
+		required any extraInfo  = {},
 		array appenderList,
 		title = "",
-		cleanError
+		cleanError,
+		argumentCollection = {}
 	){
 		return logMessage(
 			arguments.message,
@@ -384,7 +385,8 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 			arguments.extraInfo,
 			arguments.appenderList ?: arguments.appenderList,
 			arguments.title,
-			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors()
+			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
+			arguments.append( arguments.argumentCollection )
 		);
 	}
 
@@ -398,11 +400,12 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 	 * @cleanError    whether to override the default cleanError Value
 	 **/
 	function warn(
-		required string message   = "",
-		required struct extraInfo = {},
+		required string message = "",
+		required any extraInfo  = {},
 		array appenderList,
 		title = "",
-		cleanError
+		cleanError,
+		argumentCollection
 	){
 		return logMessage(
 			arguments.message,
@@ -410,7 +413,8 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 			arguments.extraInfo,
 			arguments.appenderList ?: arguments.appenderList,
 			arguments.title,
-			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors()
+			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
+			arguments
 		);
 	}
 
@@ -424,11 +428,12 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 	 * @cleanError    whether to override the default cleanError Value
 	 **/
 	function error(
-		required string message   = "",
-		required struct extraInfo = {},
+		required string message = "",
+		required any extraInfo  = {},
 		array appenderList,
-		title = "",
-		cleanError
+		string title = "",
+		cleanError,
+		struct argumentCollection
 	){
 		return logMessage(
 			arguments.message,
@@ -436,7 +441,8 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 			arguments.extraInfo,
 			arguments.appenderList ?: arguments.appenderList,
 			arguments.title,
-			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors()
+			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
+			arguments
 		);
 	}
 
@@ -450,11 +456,12 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 	 * @cleanError    whether to override the default cleanError Value
 	 **/
 	function fatal(
-		required string message   = "",
-		required struct extraInfo = {},
+		required string message = "",
+		required any extraInfo  = {},
 		array appenderList,
 		title = "",
-		cleanError
+		cleanError,
+		argumentCollection
 	){
 		return logMessage(
 			arguments.message,
@@ -462,13 +469,14 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 			arguments.extraInfo,
 			arguments.appenderList ?: arguments.appenderList,
 			arguments.title,
-			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors()
+			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
+			arguments
 		);
 	}
 
 	function off(
-		required string message   = "",
-		required struct extraInfo = {},
+		required string message = "",
+		required any extraInfo  = {},
 		array appenderList,
 		title = "",
 		cleanError

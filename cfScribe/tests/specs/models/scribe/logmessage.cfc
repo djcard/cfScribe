@@ -34,9 +34,9 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 				} );
 				it( "should run transformSeverity 1x", function(){
 					testme = scribe.logmessage(
-						message   = " **************** yoyo *************************** ",
-						extraInfo = {},
-						severity  = "3"
+						"message"   = " **************** yoyo *************************** ",
+						"extraInfo" = {},
+						"severity"  = "3"
 					);
 					expect( scribe.$count( "transformSeverity" ) ).tobe( 1 );
 				} );
@@ -57,6 +57,59 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 					);
 					expect( scribe.$count( "obtainDynamicTargets" ) ).tobe( 0 );
 				} );
+				it( "If an argument collection is submitted, it should pass all arguments and all values from the argument collection append to obtainDynamicTargets", function(){
+					var appendedStuct = {
+						"#mockData( $num = 1, $type = "words:1" )[ 1 ]#" : mockData( $num = 1, $type = "words:1" )[ 1 ]
+					};
+					scribe.$(
+						method   = "obtainDynamicTargets",
+						callBack = function(){
+							var testme = arguments;
+							expect( arguments[ 1 ] ).tobetypeof( "struct" );
+							appendedStuct
+								.keyArray()
+								.each( function( item ){
+									expect( testme[ 1 ] ).tohaveKey( item );
+									expect( testme[ 1 ][ item ] ).tobe( appendedStuct[ item ] );
+								} );
+							return [];
+						}
+					);
+					testme = scribe.logmessage(
+						message            = " **************** This one *************************** ",
+						extraInfo          = {},
+						severity           = "6",
+						argumentCollection = appendedStuct
+					);
+					expect( scribe.$count( "obtainDynamicTargets" ) ).tobe( 1 );
+				} );
+				it( "If the arguments are overloaded, the overloaded arguments should be sent to obtainDynamicTargets", function(){
+					var key  = "#mockData( $num = 1, $type = "words:1" )[ 1 ]#";
+					var valu = mockData( $num = 1, $type = "words:1" )[ 1 ];
+
+					scribe.$(
+						method   = "obtainDynamicTargets",
+						callBack = function(){
+							var testme = arguments;
+							expect( arguments[ 1 ] ).tobetypeof( "struct" );
+							expect( testme[ 1 ] ).tohaveKey( key );
+							expect( testme[ 1 ][ key ] ).tobe( valu );
+							return [];
+						}
+					);
+					testme = scribe.logmessage(
+						message   = " **************** This one *************************** ",
+						extraInfo = {},
+						severity  = "6",
+						"#key#"   = valu
+					);
+					expect( scribe.$count( "obtainDynamicTargets" ) ).tobe( 1 );
+				} );
+
+
+
+
+
 				it( "If there is extrainfo and cleanErrors is false, run cleanError 0x", function(){
 					scribe.setCleanErrors( false );
 					testme = scribe.logmessage(

@@ -82,7 +82,7 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 	 *
 	 * @extraInfo the stuct to determine if empty
 	 **/
-	function extraInfoEmpty( required struct extraInfo ){
+	function extraInfoEmpty( required any extraInfo ){
 		var skipFields = [ "message", "filterClass" ];
 		if ( isSimpleValue( arguments.extraInfo ) ) {
 			return true;
@@ -93,11 +93,10 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 				.keyArray()
 				.reduce( function( sum, item ){
 					var additive = !isSimpleValue( extraInfo[ item ] ) ? 1 : toString( extraInfo[ item ] ).len();
-					//        systemOutput("runningTotal: " & sum);
-					//        systemOutput("additive: " & additive);
+
 					return skipFields.findnocase( item ) > 0 ? sum : sum + additive;
 				}, 0 );
-			//      systemOutput("Sum: " & summer);
+
 			return summer == 0;
 		}
 	}
