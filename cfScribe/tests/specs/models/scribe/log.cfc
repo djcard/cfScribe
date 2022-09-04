@@ -55,7 +55,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 							expect( arguments[ "4" ] ).tobeTypeOf( "array" );
 							expect( arguments[ "5" ] ).tobe( testReturn );
 							expect( arguments[ "6" ] ).tobe( true );
-							expect( arguments.len() ).tobe( 6 );
+							expect( arguments.len() ).tobe( 7 );
 						}
 					);
 					testme = scribe.debug(

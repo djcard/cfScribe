@@ -144,6 +144,13 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 					expect( scribe.$count( "transformSeverity" ) ).tobe( 1 );
 					expect( testme ).tobe( fakeret );
 				} );
+
+				it( "If the first item of the key submitted is `argument`,return that value from the passed in arguments if it exists", function(){
+					var fakeHeaderName = mockData( $num = 1, $type = "words:1" )[ 1 ];
+					var fakeret        = mockData( $num = 1, $type = "words:1" )[ 1 ];
+					testme = scribe.processNextValue( "argument:#fakeHeaderName#", {"#fakeHeaderName#":fakeret} );
+					expect( testme ).tobe( fakeret );
+				} );
 			}
 		);
 	}
