@@ -6,6 +6,7 @@ Please visit the full documents at [https://cfscribe.ortusbooks.com/](https://cf
 
 
 ### ChangeLog
+0.0.8 - scribeConsole to accomodate Arrays
 
 0.0.7 - updated to use ErrorFilter 0.0.9, added argumentCollection to log, logMessage, fatal, error, warn, info and debug calls. Also included the "argument:name" ruleDefinition parser. Removed old tests.  
 
