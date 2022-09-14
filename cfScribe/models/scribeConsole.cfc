@@ -88,6 +88,8 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 			return true;
 		} else if ( isStruct( arguments.extraInfo ) && arguments.extraInfo.keyArray().len() == 0 ) {
 			return true;
+		} else if (isArray(arguments.extraInfo)){
+			return true;
 		} else {
 			var summer = arguments.extraInfo
 				.keyArray()
