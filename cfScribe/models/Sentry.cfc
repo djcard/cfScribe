@@ -15,10 +15,15 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 	 * @name The name by which this appender will be referenced
 	 **/
 	function init( required string name = "sentry" ){
+		initSentry();
 		super.init( name );
 		return this;
 	}
 
+	function initSentry(){
+		setSentryService( application.wirebox.getInstance( "sentryService@sentry" ) );
+		getSentryService().setEnabled( true );
+	}
 	/***
 	 * Sets the SentryService appender to true
 	 *
@@ -44,6 +49,10 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 	 **/
 	void function logMessage( required coldbox.system.logging.LogEvent logEvent ){
 		if ( sentryInstalled() ) {
+			if ( isNull( getSentryService() ) || isSimpleValue( getSentryService() ) ) {
+				initSentry();
+			}
+
 			return getSentryService().captureException(
 				exception = logEvent.getExtraInfo(),
 				level     = logevent.getSeverity()

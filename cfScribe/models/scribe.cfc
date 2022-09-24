@@ -112,18 +112,18 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 		any severity   = 3,
 		any extraInfo  = {},
 		array appenderList,
-		string title = "",
-		string cleanError,
-		struct argumentCollection = {}
+		string title               = "",
+		string cleanError          = true,
+		struct attributeCollection = {}
 	){
 		return logMessage(
-			arguments.message,
-			arguments.severity,
-			arguments.extraInfo,
-			arguments.appenderList ?: arguments.appenderList,
-			arguments.title,
-			arguments.cleanError ?: arguments.cleanError,
-			arguments
+			message             = arguments.message,
+			severity            = arguments.severity,
+			extraInfo           = arguments.extraInfo,
+			appenderlist        = !isNull( arguments.appenderList ) ? arguments.appenderList : arrayNew( 1 ),
+			title               = arguments.title,
+			cleanError          = arguments.cleanError ?: arguments.cleanError,
+			attributeCollection = arguments.append( arguments.attributeCollection, true )
 		);
 	}
 
@@ -144,13 +144,15 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 		array appenderList,
 		string title = "",
 		boolean cleanError,
-		argumentCollection = {}
+		attributeCollection = {}
 	){
 		var retme         = {};
 		var severitylevel = transformSeverity( arguments.severity );
-		var targetList    = !isNull( arguments.appenderList )
+
+		var targetList = !isNull( arguments.appenderList ) && isArray( arguments.appenderList ) && appenderList.len() > 0
 		 ? arguments.appenderList
 		 : obtainDynamicTargets( arguments );
+
 		var finalClean   = !isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors();
 		var cleanedError = !isSimpleValue( arguments.extraInfo ) && finalClean ? variables.cleanError( extraInfo ) : arguments.extraInfo;
 
@@ -165,14 +167,14 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 				logEvent.setExtrainfo( fillInKeys( item, logEvent.getExtrainfo() ) );
 			}
 
+			if ( variables.appenders.keyExists( item ) ) {
+				retme[ item ] = variables.appenders[ item ].logMessage( logevent, title );
+			} else {
+				writeDump( var = "No appender defined for #item#", output = "console" );
+			};
 
-			retme[ item ] = variables.appenders.keyExists( item ) ? variables.appenders[ item ].logMessage(
-				logevent,
-				title
-			) : dump( var = "No appender defined for #item#", output = "console" );
+			return retme;
 		} );
-
-		return retme;
 	}
 
 	/***
@@ -183,12 +185,13 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 	 **/
 	function fillInKeys( required string appenderName, struct base = {} ){
 		var keyList = variables.mandatoryKeys.keyExists( appenderName ) ? variables.mandatoryKeys[ appenderName ] : "";
-		keyList
-			.ListToArray()
-			.each( function( item ){
-				base[ item ] = base.keyExists( item ) ? base[ item ] : "";
-			} );
-
+		if ( keyList.len() ) {
+			keyList
+				.listToArray()
+				.each( function( item ){
+					base[ item ] = base.keyExists( item ) ? base[ item ] : "";
+				} );
+		}
 		return base;
 	}
 
@@ -349,16 +352,16 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 		array appenderList,
 		title = "",
 		cleanError,
-		argumentCollection = {}
+		attributeCollection = {}
 	){
 		return logMessage(
-			arguments.message,
-			"4",
-			arguments.extraInfo,
-			arguments.appenderList ?: arguments.appenderList,
-			arguments.title,
-			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
-			arguments
+			message             = arguments.message,
+			severity            = "4",
+			extraInfo           = arguments.extraInfo,
+			appenderList        = !isNull( arguments.appenderList ) ? arguments.appenderList : arrayNew( 1 ),
+			title               = arguments.title,
+			cleanError          = !isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
+			attributeCollection = arguments.append( arguments.attributeCollection, true )
 		);
 	}
 
@@ -377,16 +380,16 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 		array appenderList,
 		title = "",
 		cleanError,
-		argumentCollection = {}
+		attributeCollection = {}
 	){
 		return logMessage(
-			arguments.message,
-			"3",
-			arguments.extraInfo,
-			arguments.appenderList ?: arguments.appenderList,
-			arguments.title,
-			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
-			arguments.append( arguments.argumentCollection )
+			message             = arguments.message,
+			severity            = "3",
+			extraInfo           = arguments.extraInfo,
+			appenderList        = !isNull( arguments.appenderList ) ? arguments.appenderList : arrayNew( 1 ),
+			title               = arguments.title,
+			cleanError          = !isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
+			attributeCollection = arguments.append( arguments.attributeCollection, true )
 		);
 	}
 
@@ -405,16 +408,16 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 		array appenderList,
 		title = "",
 		cleanError,
-		argumentCollection
+		attributeCollection = {}
 	){
 		return logMessage(
-			arguments.message,
-			"2",
-			arguments.extraInfo,
-			arguments.appenderList ?: arguments.appenderList,
-			arguments.title,
-			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
-			arguments
+			message             = arguments.message,
+			severity            = "2",
+			extraInfo           = arguments.extraInfo,
+			appenderList        = !isNull( arguments.appenderList ) ? arguments.appenderList : arrayNew( 1 ),
+			title               = arguments.title,
+			cleanError          = !isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
+			attributeCollection = arguments.append( arguments.attributeCollection, true )
 		);
 	}
 
@@ -433,16 +436,16 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 		array appenderList,
 		string title = "",
 		cleanError,
-		struct argumentCollection
+		attributeCollection = {}
 	){
 		return logMessage(
-			arguments.message,
-			"1",
-			arguments.extraInfo,
-			arguments.appenderList ?: arguments.appenderList,
-			arguments.title,
-			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
-			arguments
+			message             = arguments.message,
+			severity            = "1",
+			extraInfo           = arguments.extraInfo,
+			appenderList        = !isNull( arguments.appenderList ) ? arguments.appenderList : arrayNew( 1 ),
+			title               = arguments.title,
+			cleanError          = !isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
+			attributeCollection = arguments.append( arguments.attributeCollection, true )
 		);
 	}
 
@@ -461,16 +464,16 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 		array appenderList,
 		title = "",
 		cleanError,
-		argumentCollection
+		attributeCollection = {}
 	){
 		return logMessage(
-			arguments.message,
-			"0",
-			arguments.extraInfo,
-			arguments.appenderList ?: arguments.appenderList,
-			arguments.title,
-			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
-			arguments
+			message             = arguments.message,
+			severity            = "0",
+			extraInfo           = arguments.extraInfo,
+			appenderList        = !isNull( arguments.appenderList ) ? arguments.appenderList : arrayNew( 1 ),
+			title               = arguments.title,
+			cleanError          = !isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors(),
+			attributeCollection = arguments.append( arguments.attributeCollection, true )
 		);
 	}
 
@@ -485,7 +488,7 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 			arguments.message,
 			"-1",
 			arguments.extraInfo,
-			arguments.appenderList ?: arguments.appenderList,
+			!isNull( arguments.appenderList ) ? arguments.appenderList : arrayNew( 1 ),
 			arguments.title,
 			!isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors()
 		);

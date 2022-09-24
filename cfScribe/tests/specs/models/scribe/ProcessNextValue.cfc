@@ -12,7 +12,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 
 	// executes after all suites+specs in the run() method
 	function afterAll(){
-		super.afterAll();
+		// super.afterAll();
 	}
 
 	/*********************************** BDD SUITES ***********************************/
@@ -148,7 +148,10 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 				it( "If the first item of the key submitted is `argument`,return that value from the passed in arguments if it exists", function(){
 					var fakeHeaderName = mockData( $num = 1, $type = "words:1" )[ 1 ];
 					var fakeret        = mockData( $num = 1, $type = "words:1" )[ 1 ];
-					testme = scribe.processNextValue( "argument:#fakeHeaderName#", {"#fakeHeaderName#":fakeret} );
+					testme             = scribe.processNextValue(
+						"argument:#fakeHeaderName#",
+						{ "#fakeHeaderName#" : fakeret }
+					);
 					expect( testme ).tobe( fakeret );
 				} );
 			}

@@ -26,7 +26,9 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 	 *
 	 **/
 	function onDiComplete(){
-		initPusher();
+		if ( !application.keyExists( "pusher" ) || isSimpleValue( application.pusher ) ) {
+			initPusher();
+		}
 	}
 
 	/***
@@ -56,7 +58,11 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 	 * @logEvent an instance of coldbox.system.logging.LogEvent
 	 **/
 	void function logMessage( required coldbox.system.logging.LogEvent logEvent ){
-		thread channel=getenvironment() event=logEvent.getMessage() message=logEvent.getextraInfo() {
+		thread
+			channel=getenvironment()
+			event  =logEvent.getMessage()
+			message=logEvent.getextraInfo()
+			name   ="pusher#randRange( 1, 1000 )#" {
 			application.pusher.trigger(
 				attributes.channel,
 				attributes.event,

@@ -20,17 +20,13 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 
 	function run(){
 		describe(
-			title  = "CleanEnvVars should",
+			title  = "ScreenDump should",
 			labels = "automated",
 			body   = function(){
 				beforeEach( function(){
-					scribe = createMock( object = getInstance( "scribe@cfscribe" ) );
 				} );
-				it( "if the submitted struct has the submitted key, return that node", function(){
-					mockKey = mockdata( $num = 1, $type = "words:1" )[ 1 ];
-					mockStr = { "#mockKey#" : mockdata( $num = 1, $type = "words:1" )[ 1 ] };
-					testme  = scribe.extractRules( mockKey, mockStr );
-					expect( testme ).tobe( mockStr[ mockKey ] );
+				it( "Returns the results of wirebox.containsInstance. limited testing possible", function(){
+					expect( true ).tobeTrue();
 				} );
 			}
 		);

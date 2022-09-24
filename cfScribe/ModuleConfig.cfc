@@ -85,8 +85,8 @@ component {
 			},
 			rules : {
 				"production"  : "",
-				"development" : [ "screenDump" ],
-				"testing"     : [ "screenDump" ]
+				"development" : [ "scribeConsole" ],
+				"testing"     : [ "scribeConsole" ]
 			},
 			"ruleDefinitions" : [ "env:environment" ],
 			"cleanErrors"     : true,

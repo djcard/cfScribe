@@ -12,7 +12,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 
 	// executes after all suites+specs in the run() method
 	function afterAll(){
-		super.afterAll();
+		// super.afterAll();
 	}
 
 	/*********************************** BDD SUITES ***********************************/
@@ -20,13 +20,21 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 
 	function run(){
 		describe(
-			title  = "ScreenDump should",
+			title  = "HeaderLine should",
 			labels = "automated",
 			body   = function(){
 				beforeEach( function(){
+					scribe = getInstance( "scribeConsole@cfscribe" );
 				} );
-				it( "Returns the results of wirebox.containsInstance. limited testing possible", function(){
-					expect( true ).tobeTrue();
+				it( "should return an instance of scribeConsole ", function(){
+					testme = scribe.onDiComplete();
+					expect( testme ).toBeInstanceOf( "scribeConsole" );
+				} );
+				it( "should set the cfmlEngine property to either lucee or adobe", function(){
+					var engineArr = [ "lucee", "adobe" ];
+					testme        = scribe.onDiComplete();
+					expect( scribe.getCFMLEngine().len() ).tobegt( 0 );
+					expect( engineArr.findNoCase( scribe.getCFMLEngine() ) ).tobegt( 0 );
 				} );
 			}
 		);

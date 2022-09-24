@@ -12,7 +12,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 
 	// executes after all suites+specs in the run() method
 	function afterAll(){
-		super.afterAll();
+		// super.afterAll();
 	}
 
 	/*********************************** BDD SUITES ***********************************/
@@ -24,10 +24,11 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 			labels = "automated",
 			body   = function(){
 				beforeEach( function(){
+					application.delete( "pusher" );
 					scribe = createMock( object = getInstance( "Pusher@cfscribe" ) );
 					scribe.$( method = "initPusher" );
 				} );
-				it( "Application should have the key 'pusher'", function(){
+				it( "Should run initPusher 1x", function(){
 					testme = scribe.onDiComplete();
 					expect( scribe.$count( "initPusher" ) ).tobe( 1 );
 				} );

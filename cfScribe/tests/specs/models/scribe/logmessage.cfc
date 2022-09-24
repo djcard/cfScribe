@@ -12,7 +12,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 
 	// executes after all suites+specs in the run() method
 	function afterAll(){
-		super.afterAll();
+		// super.afterAll();
 	}
 
 	/*********************************** BDD SUITES ***********************************/
@@ -34,9 +34,9 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 				} );
 				it( "should run transformSeverity 1x", function(){
 					testme = scribe.logmessage(
-						"message"   = " **************** yoyo *************************** ",
-						"extraInfo" = {},
-						"severity"  = "3"
+						message   = " **************** yoyo *************************** ",
+						extraInfo = {},
+						severity  = "3"
 					);
 					expect( scribe.$count( "transformSeverity" ) ).tobe( 1 );
 				} );
@@ -84,7 +84,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 					expect( scribe.$count( "obtainDynamicTargets" ) ).tobe( 1 );
 				} );
 				it( "If the arguments are overloaded, the overloaded arguments should be sent to obtainDynamicTargets", function(){
-					var key  = "#mockData( $num = 1, $type = "words:1" )[ 1 ]#";
+					var key  = mockData( $num = 1, $type = "words:1" )[ 1 ];
 					var valu = mockData( $num = 1, $type = "words:1" )[ 1 ];
 
 					scribe.$(
@@ -92,8 +92,8 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 						callBack = function(){
 							var testme = arguments;
 							expect( arguments[ 1 ] ).tobetypeof( "struct" );
-							expect( testme[ 1 ] ).tohaveKey( key );
-							expect( testme[ 1 ][ key ] ).tobe( valu );
+							expect( testme[ 1 ] ).tohaveKey( "blarg" );
+							expect( testme[ 1 ][ "blarg" ] ).tobe( valu );
 							return [];
 						}
 					);
@@ -101,7 +101,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 						message   = " **************** This one *************************** ",
 						extraInfo = {},
 						severity  = "6",
-						"#key#"   = valu
+						blarg     = valu
 					);
 					expect( scribe.$count( "obtainDynamicTargets" ) ).tobe( 1 );
 				} );

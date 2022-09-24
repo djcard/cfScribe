@@ -12,7 +12,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 
 	// executes after all suites+specs in the run() method
 	function afterAll(){
-		super.afterAll();
+		// super.afterAll();
 	}
 
 	/*********************************** BDD SUITES ***********************************/
@@ -62,13 +62,13 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 					application.delete( "pusher" );
 					expect( application.keyExists( "pusher" ) ).tobeFalse();
 					scribe.init( namer, fakeSettings );
-					expect( scribe.$count( "initPusher" ) ).tobe( 1 );
+					expect( scribe.$count( "initPusher" ) ).tobe( 2 );
 				} );
 				it( "If the application.pusher key is a simple value, run initPusher 1x", function(){
 					application.pusher = "";
 					expect( application.pusher.len() ).tobe( 0 );
 					scribe.init( namer, fakeSettings );
-					expect( scribe.$count( "initPusher" ) ).tobe( 1 );
+					expect( scribe.$count( "initPusher" ) ).tobe( 2 );
 				} );
 			}
 		);

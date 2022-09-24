@@ -12,7 +12,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 
 	// executes after all suites+specs in the run() method
 	function afterAll(){
-		super.afterAll();
+		// super.afterAll();
 	}
 
 	/*********************************** BDD SUITES ***********************************/
@@ -54,7 +54,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 					sentryService.$(
 						method   = "captureException",
 						callback = function(){
-							expect( arguments[ 1 ] ).toBeTypeOf( "struct" );
+							expect( arguments[ 1 ] ).tohavekey( "type" );
 							expect( arguments[ 2 ] ).toBe( severity );
 						}
 					);

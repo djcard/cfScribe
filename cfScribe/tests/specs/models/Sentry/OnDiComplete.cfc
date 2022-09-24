@@ -12,7 +12,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 
 	// executes after all suites+specs in the run() method
 	function afterAll(){
-		super.afterAll();
+		// super.afterAll();
 	}
 
 	/*********************************** BDD SUITES ***********************************/
@@ -25,7 +25,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 			body   = function(){
 				beforeEach( function(){
 					sentryService = createMock( object = getInstance( "SentryService@sentry" ) );
-					sentryService.$( method = "setEnabled", returns = false );
+					sentryService.$( method = "setEnabled", returns = sentryService );
 					scribe = createMock( object = getInstance( "Sentry@cfscribe" ) );
 					scribe.$( method = "sentryInstalled", returns = true );
 					scribe.setSentryService( sentryService );
@@ -36,6 +36,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 						method   = "setEnabled",
 						callback = function(){
 							expect( arguments[ 1 ] ).tobeFalse();
+							return sentryService;
 						}
 					);
 					testme = scribe.OnDiComplete();
@@ -47,6 +48,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 						method   = "setEnabled",
 						callback = function(){
 							expect( arguments[ 1 ] ).toBeTrue();
+							return sentryService;
 						}
 					);
 					var testme = scribe.OnDiComplete();

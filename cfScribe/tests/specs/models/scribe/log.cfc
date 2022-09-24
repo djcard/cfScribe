@@ -12,7 +12,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 
 	// executes after all suites+specs in the run() method
 	function afterAll(){
-		super.afterAll();
+		// super.afterAll();
 	}
 
 	/*********************************** BDD SUITES ***********************************/
@@ -49,13 +49,13 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 					scribe.$(
 						method   = "logmessage",
 						callback = function(){
-							expect( arguments[ "1" ] ).tobe( message );
-							expect( arguments[ "2" ] ).tobe( severity );
-							expect( arguments[ "3" ].keyList() ).tobe( extraInfo.keyList() );
-							expect( arguments[ "4" ] ).tobeTypeOf( "array" );
-							expect( arguments[ "5" ] ).tobe( testReturn );
-							expect( arguments[ "6" ] ).tobe( true );
-							expect( arguments.len() ).tobe( 7 );
+							expect( arguments[ "message" ] ).tobe( message );
+							expect( arguments[ "severity" ] ).tobe( severity );
+							expect( arguments[ "extraInfo" ].keyList() ).tobe( extraInfo.keyList() );
+							expect( arguments[ "appenderList" ] ).tobeTypeOf( "array" );
+							expect( arguments[ "title" ] ).tobe( testReturn );
+							expect( arguments[ "cleanError" ] ).tobe( true );
+							expect( arguments.keyArray().len() ).tobe( 7 );
 						}
 					);
 					testme = scribe.debug(
@@ -85,8 +85,8 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 							appendedStuct
 								.keyArray()
 								.each( function( item ){
-									expect( testme[ 7 ] ).tohaveKey( item );
-									expect( testme[ 7 ][ item ] ).tobe( appendedStuct[ item ] );
+									expect( testme[ "attributeCollection" ] ).tohaveKey( item );
+									expect( testme[ "attributeCollection" ][ item ] ).tobe( appendedStuct[ item ] );
 								} );
 							return [];
 						}
@@ -108,8 +108,8 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 						callBack = function(){
 							var testme = arguments;
 							expect( arguments[ 7 ] ).tobetypeof( "struct" );
-							expect( testme[ 7 ] ).tohaveKey( key );
-							expect( testme[ 7 ][ key ] ).tobe( valu );
+							expect( testme[ 7 ] ).tohaveKey( "blarg" );
+							expect( testme[ 7 ][ "blarg" ] ).tobe( valu );
 							return [];
 						}
 					);
@@ -117,7 +117,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 						message   = " **************** This one *************************** ",
 						extraInfo = {},
 						severity  = "6",
-						"#key#"   = valu
+						blarg     = valu
 					);
 					expect( scribe.$count( "logMessage" ) ).tobe( 1 );
 				} );

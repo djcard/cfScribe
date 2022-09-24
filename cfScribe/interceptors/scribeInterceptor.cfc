@@ -13,7 +13,14 @@ component extends="coldbox.system.Interceptor" accessors="true" {
 			);
 	}
 
-	function onException( data, event, interceptData, prc, rc, buffer ){
+	function onException(
+		data = {},
+		event,
+		interceptData,
+		prc,
+		rc,
+		buffer
+	){
 		getscribe().logMessage(
 			message   = "Handled by Scribe Interceptor",
 			severity  = "error",

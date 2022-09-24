@@ -1,10 +1,16 @@
 component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 
-	property name="cfmlEngine" default="lucee";
+	property name="coldbox" inject="coldbox";
+	property name="cfmlEngine" default="";
 	property name="environment" inject="coldbox:setting:environment";
 
 	function init( string name = "scribeConsole", struct properties = {} ){
 		super.init( name );
+		return this;
+	}
+
+	function onDiComplete(){
+		setCfmlEngine( getColdBox().getCFMLEngine().getEngine() );
 		return this;
 	}
 
@@ -88,7 +94,7 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 			return true;
 		} else if ( isStruct( arguments.extraInfo ) && arguments.extraInfo.keyArray().len() == 0 ) {
 			return true;
-		} else if (isArray(arguments.extraInfo)){
+		} else if ( isArray( arguments.extraInfo ) ) {
 			return true;
 		} else {
 			var summer = arguments.extraInfo
@@ -185,7 +191,11 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 	 **/
 	void function writeToConsole( required array content ){
 		content.each( function( item ){
-			var x = CfmlEngine eq "lucee" ? systemOutput( item ) : dump( var = item, output = "console" );
+			if ( CfmlEngine eq "lucee" ) {
+				systemOutput( item );
+			} else {
+				writeDump( var = item, output = "console" );
+			};
 		} );
 	}
 

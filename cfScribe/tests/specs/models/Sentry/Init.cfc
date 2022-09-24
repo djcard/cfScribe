@@ -12,7 +12,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 
 	// executes after all suites+specs in the run() method
 	function afterAll(){
-		super.afterAll();
+		// super.afterAll();
 	}
 
 	/*********************************** BDD SUITES ***********************************/
@@ -32,6 +32,11 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 					testme = scribe.init();
 					expect( testme ).tobeInstanceOf( "sentry" );
 				} );
+				it( "The sentryService should not be null", function(){
+					testme = scribe.init();
+					expect( isNull( scribe.getSentryService ) ).tobeFalse();
+				} );
+
 				it( "if no name is submitted, set the name property to sentry.", function(){
 					scribe.init();
 					expect( scribe.getName() ).tobe( "sentry" );

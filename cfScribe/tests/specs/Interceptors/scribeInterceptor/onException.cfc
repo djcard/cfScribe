@@ -12,7 +12,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 
 	// executes after all suites+specs in the run() method
 	function afterAll(){
-		super.afterAll();
+		// super.afterAll();
 	}
 
 	/*********************************** BDD SUITES ***********************************/
@@ -24,7 +24,8 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 			labels = "automated",
 			body   = function(){
 				beforeEach( function(){
-					scribe = createmock( object = getInstance( "scribe@cfscribe" ) );
+					fakeMessage = mockData( $num = 1, $type = "words[4]" )[ 1 ];
+					scribe      = createmock( object = getInstance( "scribe@cfscribe" ) );
 					scribe.$( method = "logMessage" );
 					testObj = createObject( "cfscribe.interceptors.scribeInterceptor" );
 					testObj.setScribe( scribe );
