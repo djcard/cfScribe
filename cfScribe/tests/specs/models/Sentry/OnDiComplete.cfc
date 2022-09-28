@@ -42,17 +42,11 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 					testme = scribe.OnDiComplete();
 					expect( sentryService.$count( "setEnabled" ) ).tobe( 0 );
 				} );
-				it( "If Sentry is installed it should call Sentry Service captureException 1x and pass in the logEvent", function(){
+				it( "Sentry should be enabled", function(){
 					scribe.$( method = "sentryInstalled", returns = true );
-					sentryService.$(
-						method   = "setEnabled",
-						callback = function(){
-							expect( arguments[ 1 ] ).toBeTrue();
-							return sentryService;
-						}
-					);
 					var testme = scribe.OnDiComplete();
-					expect( sentryService.$count( "setEnabled" ) ).tobe( 1 );
+					writeDump( scribe.getsentryService() );
+					expect( scribe.getsentryService().getEnabled() ).tobeTrue();
 				} );
 			}
 		);

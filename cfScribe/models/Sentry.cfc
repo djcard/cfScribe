@@ -22,7 +22,7 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 
 	function initSentry(){
 		setSentryService( application.wirebox.getInstance( "sentryService@sentry" ) );
-		getSentryService().setEnabled( true );
+		getSentryService().enabled = true;
 	}
 	/***
 	 * Sets the SentryService appender to true
@@ -30,7 +30,7 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 	 **/
 	function onDIComplete(){
 		if ( sentryInstalled() ) {
-			getSentryService().setEnabled( true );
+			getSentryService().enabled = true;
 		}
 	}
 

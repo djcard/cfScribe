@@ -103,10 +103,13 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 
 
 
-				it( "If an argument collection is submitted, it should pass all arguments and all values from the argument collection append to obtainDynamicTargets", function(){
-					var appendedStuct = {
-						"#mockData( $num = 1, $type = "words:1" )[ 1 ]#" : mockData( $num = 1, $type = "words:1" )[ 1 ]
-					};
+				it( "If an argument collection is submitted, it should pass all arguments and all values from the argument collection append to arguments", function(){
+					var appendedStuct = {};
+					appendedStuct[ "#mockData( $num = 1, $type = "words:1" )[ 1 ]#" ] = mockData(
+						$num  = 1,
+						$type = "words:1"
+					)[ 1 ];
+
 					scribe.$(
 						method   = "logMessage",
 						callBack = function(){
@@ -122,14 +125,14 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 						}
 					);
 					testme = scribe.info(
-						message            = " **************** This one *************************** ",
-						extraInfo          = {},
-						severity           = "6",
-						argumentCollection = appendedStuct
+						message             = " **************** This one *************************** ",
+						extraInfo           = {},
+						severity            = "6",
+						attributeCollection = appendedStuct
 					);
 					expect( scribe.$count( "logMessage" ) ).tobe( 1 );
 				} );
-				it( "If the arguments are overloaded, the overloaded arguments should be sent to obtainDynamicTargets", function(){
+				it( "If the arguments are overloaded, the overloaded arguments should be sent to logmessage", function(){
 					var key  = "#mockData( $num = 1, $type = "words:1" )[ 1 ]#";
 					var valu = mockData( $num = 1, $type = "words:1" )[ 1 ];
 

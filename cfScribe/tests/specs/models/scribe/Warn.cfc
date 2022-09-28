@@ -120,10 +120,10 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 						}
 					);
 					testme = scribe.warn(
-						message            = " **************** This one *************************** ",
-						extraInfo          = {},
-						severity           = "6",
-						argumentCollection = appendedStuct
+						message             = " **************** This one *************************** ",
+						extraInfo           = {},
+						severity            = "6",
+						attributeCollection = appendedStuct
 					);
 					expect( scribe.$count( "logMessage" ) ).tobe( 1 );
 				} );

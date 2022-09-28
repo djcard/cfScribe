@@ -37,10 +37,11 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 						}
 					};
 					scribe = createmock( object = getInstance( "scribe@cfscribe" ) );
+
 					scribe.setRules( rules );
 					scribe.setRuleDefinitions( [
 						function(){
-							return "a"
+							return "a";
 						}
 					] );
 				} );
@@ -53,10 +54,10 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 				it( "single level rules", function(){
 					scribe.setRuleDefinitions( [
 						function(){
-							return "a"
+							return "a";
 						},
 						function(){
-							return "b"
+							return "b";
 						}
 					] );
 					fakeVals   = { notifyAdmin : "notifyAdmin", severity : 1 };
@@ -67,10 +68,10 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 				it( "should process multilevel rules", function(){
 					scribe.setRuleDefinitions( [
 						function(){
-							return "b"
+							return "b";
 						},
 						function(){
-							return "c"
+							return "c";
 						}
 					] );
 					fakeVals   = { notifyAdmin : "notifyAdmin", severity : 1 };
@@ -82,28 +83,62 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 				it( "Even if there are more rules, when the last node extracted is an array, stop processing", function(){
 					scribe.setRuleDefinitions( [
 						function(){
-							return "b"
+							return "b";
 						},
 						function(){
-							return "d"
+							return "d";
 						},
 						function(){
-							return "f"
+							return "f";
 						},
 						function(){
-							return "g"
+							return "g";
 						},
 						function(){
-							return "q"
+							return "q";
 						},
 						function(){
-							return "r"
+							return "r";
 						}
 					] );
 					fakeVals   = { notifyAdmin : "notifyAdmin", severity : 1 };
 					var testme = scribe.obtainDynamicTargets( fakeVals );
 					expect( testme.len() ).tobe( 1 );
 					expect( testme[ 1 ] ).tobe( item2 );
+				} );
+
+				it( "ProcessValues should be receiving first the item then the arguments", function(){
+					fakeVals  = { notifyAdmin : "notifyAdmin", severity : 1, priority : 1 };
+					fakeRules = [ "a", "b" ];
+					scribe.setRuleDefinitions( fakeRules );
+					scribe.$( method = "processNextValue", returns = "a" );
+					var testme = scribe.obtainDynamicTargets( fakeVals );
+					expect( scribe._MOCKCALLLOGGERS.processNextValue.len() ).tobe( 2 );
+					expect( scribe._MOCKCALLLOGGERS.processNextValue[ 1 ][ 1 ] ).tobe( fakeRules[ 1 ] );
+					expect( scribe._MOCKCALLLOGGERS.processNextValue[ 1 ][ 2 ] ).tobetypeOf( "struct" );
+					expect( scribe._MOCKCALLLOGGERS.processNextValue[ 1 ][ 2 ].keylist() ).tobe(
+						fakeVals.keyList()
+					);
+					fakeVals
+						.keyArray()
+						.each( function( item ){
+							expect( scribe._MOCKCALLLOGGERS.processNextValue[ 1 ][ 2 ][ item ] ).tobe(
+								fakeVals[ item ]
+							);
+						} );
+
+					expect( scribe._MOCKCALLLOGGERS.processNextValue[ 2 ][ 1 ] ).tobe( fakeRules[ 2 ] );
+					expect( scribe._MOCKCALLLOGGERS.processNextValue[ 2 ][ 2 ] ).tobetypeOf( "struct" );
+					expect( scribe._MOCKCALLLOGGERS.processNextValue[ 2 ][ 2 ].keylist() ).tobe(
+						fakeVals.keyList()
+					);
+					fakeVals
+						.keyArray()
+						.each( function( item ){
+							expect( scribe._MOCKCALLLOGGERS.processNextValue[ 2 ][ 2 ][ item ] ).tobe(
+								fakeVals[ item ]
+							);
+						} );
 				} );
 			}
 		);

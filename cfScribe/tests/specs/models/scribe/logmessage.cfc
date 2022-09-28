@@ -58,28 +58,31 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 					expect( scribe.$count( "obtainDynamicTargets" ) ).tobe( 0 );
 				} );
 				it( "If an argument collection is submitted, it should pass all arguments and all values from the argument collection append to obtainDynamicTargets", function(){
-					var appendedStuct = {
-						"#mockData( $num = 1, $type = "words:1" )[ 1 ]#" : mockData( $num = 1, $type = "words:1" )[ 1 ]
-					};
+					var appendedStruct = {};
+					appendedStruct[ "#mockData( $num = 1, $type = "words:1" )[ 1 ]#" ] = mockData(
+						$num  = 1,
+						$type = "words:1"
+					)[ 1 ];
+
 					scribe.$(
 						method   = "obtainDynamicTargets",
 						callBack = function(){
 							var testme = arguments;
 							expect( arguments[ 1 ] ).tobetypeof( "struct" );
-							appendedStuct
+							appendedStruct
 								.keyArray()
 								.each( function( item ){
 									expect( testme[ 1 ] ).tohaveKey( item );
-									expect( testme[ 1 ][ item ] ).tobe( appendedStuct[ item ] );
+									expect( testme[ 1 ][ item ] ).tobe( appendedStruct[ item ] );
 								} );
 							return [];
 						}
 					);
 					testme = scribe.logmessage(
-						message            = " **************** This one *************************** ",
-						extraInfo          = {},
-						severity           = "6",
-						argumentCollection = appendedStuct
+						message             = " **************** This one *************************** ",
+						extraInfo           = {},
+						severity            = "6",
+						attributeCollection = appendedStruct
 					);
 					expect( scribe.$count( "obtainDynamicTargets" ) ).tobe( 1 );
 				} );

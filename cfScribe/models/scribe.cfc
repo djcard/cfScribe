@@ -151,9 +151,13 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 
 		var targetList = !isNull( arguments.appenderList ) && isArray( arguments.appenderList ) && appenderList.len() > 0
 		 ? arguments.appenderList
-		 : obtainDynamicTargets( arguments );
+		 : obtainDynamicTargets( arguments.append( attributeCollection, true ) );
 
-		var finalClean   = !isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors();
+		var finalClean = !isNull( arguments.cleanError ) ? arguments.cleanError : getCleanErrors();
+		if ( isJSON( arguments.extraInfo ) ) {
+			arguments.extraInfo = deserializeJSON( arguments.extraInfo );
+		}
+
 		var cleanedError = !isSimpleValue( arguments.extraInfo ) && finalClean ? variables.cleanError( extraInfo ) : arguments.extraInfo;
 
 		var logEvent = new coldbox.system.logging.LogEvent(
