@@ -5,6 +5,9 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 	property name="environment" inject="coldbox:setting:environment";
 
 	function init( string name = "scribeConsole", struct properties = {} ){
+		if ( !getCfmlEngine().len() ) {
+			setCfmlEngine( application.cbController.getCFMLEngine().getEngine() );
+		}
 		super.init( name );
 		return this;
 	}

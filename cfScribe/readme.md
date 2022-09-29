@@ -6,6 +6,8 @@ Please visit the full documents at [https://cfscribe.ortusbooks.com/](https://cf
 
 
 ### ChangeLog
+0.0.11 - Fixed issue in scribeConsole where environment was not being populated properly
+
 0.0.10 - fixed error where overloaded arguments from debug(), info(), warn(), error() and fatal() were not being passed all the way through to the rule engine.
 
 0.0.9 - Cumulative fixes including null issue on Sentry Appender, handling init in Pusher, default values in Scribe Interceptor,

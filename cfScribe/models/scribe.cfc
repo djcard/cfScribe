@@ -7,23 +7,23 @@
 
 component extends="coldbox.system.logging.Logger" accessors="true" {
 
-	property name="environment"     inject="coldbox:setting:environment";
-	property name="coldbox"         inject="coldbox";
-	property name="logbox"          inject="logbox";
-	property name="rules"           inject="coldbox:setting:rules@cfscribe";
-	property name="ruleDefinitions" inject="coldbox:setting:ruleDefinitions@cfscribe";
-	property name="wirebox"         inject="wirebox";
-	property name="scribeSettings"  inject="coldbox:moduleSettings:cfScribe";
-	property name="cfmlEngine" default="";
-	property name="errorFilter"     inject="errorFilter@errorFilter";
-	property name="cleanErrors"     inject="coldbox:setting:cleanErrors@cfScribe";
-	property name="coldboxSettings" inject="coldbox:coldboxsettings";
-	property name="configSettings"  inject="coldbox:configsettings";
-	property name="moduleSettings"     default="";
-	property name="envVars"            default="";
+	property name="environment"     	inject="coldbox:setting:environment";
+	property name="coldbox"         	inject="coldbox";
+	property name="logbox"        		inject="logbox";
+	property name="rules"         	  	inject="coldbox:setting:rules@cfscribe";
+	property name="ruleDefinitions" 	inject="coldbox:setting:ruleDefinitions@cfscribe";
+	property name="wirebox"         	inject="wirebox";
+	property name="scribeSettings"  	inject="coldbox:moduleSettings:cfScribe";
+	property name="cfmlEngine" 			default="";
+	property name="errorFilter"     	inject="errorFilter@errorFilter";
+	property name="cleanErrors"     	inject="coldbox:setting:cleanErrors@cfScribe";
+	property name="coldboxSettings" 	inject="coldbox:coldboxsettings";
+	property name="configSettings"  	inject="coldbox:configsettings";
+	property name="moduleSettings"     	default="";
+	property name="envVars"            	default="";
 	// property name="systemAppenders"    default="";
-	property name="systemAppenderPath" default="/coldbox/system/logging/appenders";
-	property name="mandatoryKeys" inject="coldbox:setting:mandatoryKeys@cfscribe";
+	property name="systemAppenderPath" 	default="/coldbox/system/logging/appenders";
+	property name="mandatoryKeys" 		inject="coldbox:setting:mandatoryKeys@cfscribe";
 
 	/***
 	 * Constructor
