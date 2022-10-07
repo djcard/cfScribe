@@ -231,18 +231,17 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 	 * @logEvent a populated instance of coldbox.system.logging.LogEvent
 	 **/
 	numeric function calcTableWidth( required coldbox.system.logging.LogEvent logEvent ){
-		// writeDump(logevent);
 		var length = logEvent.getmessage().len();
 		length     = isSimpleValue( arguments.logEvent.getextraInfo() )
 		 ? arguments.logEvent.getextraInfo().len()
 		 : isStruct( arguments.logEvent.getextraInfo() )
-		 ? arguments.logEvent.getextraInfo().keyExists( "message" ) && arguments.logEvent
-			.getextraInfo()
-			.message
-			.len() > length
-		 ? arguments.logEvent.getextraInfo().message.len()
-		 : length
-		 : length;
+			 ? arguments.logEvent.getextraInfo().keyExists( "message" ) && arguments.logEvent
+				.getextraInfo()
+				.message
+				.len() > length
+				 ? arguments.logEvent.getextraInfo().message.len()
+				 : length
+			 : length;
 
 		if (
 			isStruct( arguments.logEvent.getextraInfo() ) &&
@@ -262,7 +261,7 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 							} );
 					}
 				} );
-		}
+		};
 		return length;
 	}
 

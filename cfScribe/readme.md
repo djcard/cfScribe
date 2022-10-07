@@ -6,6 +6,18 @@ Please visit the full documents at [https://cfscribe.ortusbooks.com/](https://cf
 
 
 ### ChangeLog
+0.0.17 Template error fixed
+
+0.0.16 Fixed issue with Pusher environment
+
+0.0.15 Incorrect Pusher key fixed
+
+0.0.14 Updated Pusher appender with more correct settings and values
+
+0.0.13 misc errors
+
+0.0.12 Removed threading from pusher appender because of naming conflicts when used as a singleton. Added examining the ExtraInfo message for text length when calculating output width in scribeConsole
+
 0.0.11 - Fixed issue in scribeConsole where environment was not being populated properly
 
 0.0.10 - fixed error where overloaded arguments from debug(), info(), warn(), error() and fatal() were not being passed all the way through to the rule engine.

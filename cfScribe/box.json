@@ -10,8 +10,8 @@
     },
     "description":"",
     "devDependencies":{},
-    "documentation":"",
-    "homepage":"",
+    "documentation":"https://github.com/djcard/cfScribe/tree/main/cfScribe",
+    "homepage":"https://github.com/djcard/cfScribe",
     "ignore":[
         "**/.*",
         "/test/",
@@ -31,7 +31,7 @@
     "location":"ForgeboxStorage",
     "name":"CFScribe",
     "private":false,
-    "projectURL":"",
+    "projectURL":"https://github.com/djcard/cfScribe",
     "repository":{
         "type":"git",
         "URL":"https://github.com/djcard/cfScribe"
@@ -60,5 +60,5 @@
         "watchPaths":"**.cfc"
     },
     "type":"modules",
-    "version":"0.0.11"
+    "version":"0.0.17"
 }
