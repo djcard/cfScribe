@@ -13,7 +13,7 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 		setCluster( arguments.properties.cluster ?: envVars.PUSHER_CLUSTER ?: "" );
 		setApiSecret( arguments.properties.apiSecret ?: envVars.PUSHER_APISECRET ?: "" );
 		setKey( arguments.properties.key ?: envVars.PUSHER_KEY ?: "" );
-		setEnvironment(envVars.keyExists("ENVIRONMENT") ? envVars.ENVIRONMENT : "");
+		setEnvironment( envVars.keyExists( "ENVIRONMENT" ) ? envVars.ENVIRONMENT : "" );
 		super.init( name );
 
 		if ( !application.keyExists( "pusher" ) || isSimpleValue( application.pusher ) ) {
@@ -58,16 +58,16 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 	 *
 	 * @logEvent an instance of coldbox.system.logging.LogEvent
 	 **/
-	void function logMessage( required coldbox.system.logging.LogEvent logEvent )
-  {
-    if (!application.keyExists("pusher")) {
-      initpusher();
-    } else {
-      application.pusher.trigger(
-        getenvironment(),
-        logEvent.getMessage(),
-        logEvent.getextraInfo()
-        );
-    }
-  }
+	void function logMessage( required coldbox.system.logging.LogEvent logEvent ){
+		if ( !application.keyExists( "pusher" ) ) {
+			initpusher();
+		} else {
+			application.pusher.trigger(
+				getenvironment(),
+				logEvent.getMessage(),
+				logEvent.getextraInfo()
+			);
+		}
+	}
+
 }

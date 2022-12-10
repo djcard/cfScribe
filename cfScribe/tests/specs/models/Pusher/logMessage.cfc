@@ -25,14 +25,14 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 			body   = function(){
 				beforeEach( function(){
 					scribe = createMock( object = getInstance( "pusher@cfscribe" ) );
-					scribe.$(method="initpusher");
+					scribe.$( method = "initpusher" );
 				} );
-				it("If there is no application.pusher, run initPusher 1x",function(){
+				it( "If there is no application.pusher, run initPusher 1x", function(){
 					var sendme = new coldbox.system.logging.LogEvent( "notify", 3 );
 					sendme.setExtraInfo( { message : "|=0=|" } );
 					testme = scribe.logMessage( sendme );
-					expect( scribe.$count("initPusher") ).tobe(1);
-				});
+					expect( scribe.$count( "initPusher" ) ).tobe( 1 );
+				} );
 				it( "Simply passes the logEvent to the pusher jar file.", function(){
 					// var message = mockData($num=1, $type="words:1")[1];
 					// testme = scribe.logMessage(message="notify",severity=3,extraInfo={message:"|=0=|"});

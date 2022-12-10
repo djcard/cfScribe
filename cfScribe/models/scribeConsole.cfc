@@ -61,6 +61,14 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 								charSpacing( "-", contentWidth + labelWidth )
 							] );
 						} );
+					} else if ( item.lcase() == "sql" ) {
+						writeToConsole( headerLine( "SQL", contentWidth + labelWidth ) );
+						for ( var x = 0; x <= ceiling( finalErr[ "sql" ].len() / totalWidth ); x = x + 1 ) {
+							var startNumber = ( ( totalWidth * x ) - ( 2 * x ) + 1 );
+							writeToConsole(
+								headerLine( finalErr[ "sql" ].mid( startNumber, totalWidth - 2 ), totalWidth )
+							);
+						}
 					} else {
 						if (
 							isStruct( finalErr ) &&
@@ -235,13 +243,13 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 		length     = isSimpleValue( arguments.logEvent.getextraInfo() )
 		 ? arguments.logEvent.getextraInfo().len()
 		 : isStruct( arguments.logEvent.getextraInfo() )
-			 ? arguments.logEvent.getextraInfo().keyExists( "message" ) && arguments.logEvent
-				.getextraInfo()
-				.message
-				.len() > length
-				 ? arguments.logEvent.getextraInfo().message.len()
-				 : length
-			 : length;
+		 ? arguments.logEvent.getextraInfo().keyExists( "message" ) && arguments.logEvent
+			.getextraInfo()
+			.message
+			.len() > length
+		 ? arguments.logEvent.getextraInfo().message.len()
+		 : length
+		 : length;
 
 		if (
 			isStruct( arguments.logEvent.getextraInfo() ) &&
@@ -262,6 +270,15 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 					}
 				} );
 		};
+		if (
+			isStruct( arguments.logEvent.getextraInfo() ) &&
+			arguments.logEvent.getExtraInfo().keyExists( "sql" )
+		) {
+			length = arguments.logEvent.getExtraInfo().sql.len() < length ? arguments.logEvent
+				.getExtraInfo()
+				.sql
+				.len() : 80;
+		}
 		return length;
 	}
 

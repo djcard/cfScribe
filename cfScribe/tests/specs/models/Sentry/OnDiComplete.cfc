@@ -45,7 +45,7 @@ component extends="coldbox.system.testing.BaseTestCase" accessors="true" {
 				it( "Sentry should be enabled", function(){
 					scribe.$( method = "sentryInstalled", returns = true );
 					var testme = scribe.OnDiComplete();
-					//writeDump( scribe.getsentryService() );
+					// writeDump( scribe.getsentryService() );
 					expect( scribe.getsentryService().getEnabled() ).tobeTrue();
 				} );
 			}

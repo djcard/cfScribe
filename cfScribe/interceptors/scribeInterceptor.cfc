@@ -25,7 +25,6 @@ component extends="coldbox.system.Interceptor" accessors="true" {
 			message   = "Handled by Scribe Interceptor",
 			extraInfo = isStruct( arguments.data ) && arguments.data.keyExists( "exception" ) ? arguments.data.exception : arguments.data
 		);
-
 	}
 
 }
