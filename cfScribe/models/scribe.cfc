@@ -64,7 +64,7 @@ component extends="coldbox.system.logging.Logger" accessors="true" {
 			addAppender( newAppender );
 		} );
 
-		scribeSettings?.appenders?.each( function( item ){
+		scribeSettings.appenders.each( function( item ){
 			var newAppender = new "#scribeSettings.appenders[ item ].class#"(
 				name = item,properties = scribeSettings.appenders[ item ].keyExists( "properties" ) ? scribeSettings.appenders[
 					item

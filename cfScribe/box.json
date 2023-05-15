@@ -6,7 +6,8 @@
         "John Wilson"
     ],
     "dependencies":{
-        "errorFilter":"^0.0.9"
+        "errorFilter":"^0.0.9",
+        "sentry":"^1.5.21+225"
     },
     "description":"",
     "devDependencies":{},
@@ -60,5 +61,5 @@
         "watchPaths":"**.cfc"
     },
     "type":"modules",
-    "version":"0.0.18"
+    "version":"0.0.20"
 }

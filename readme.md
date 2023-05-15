@@ -6,6 +6,8 @@ Please visit the full documents at [https://cfscribe.ortusbooks.com/](https://cf
 
 
 ### ChangeLog
+0.0.19 Fixed oversight and included as a dependency. 
+
 0.0.18 Better Handling of long SQL statements. Added a max width of 80 characters.
 
 0.0.17 Template error fixed

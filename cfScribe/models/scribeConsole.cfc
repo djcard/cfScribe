@@ -103,8 +103,13 @@ component extends="coldbox.system.logging.AbstractAppender" accessors="true" {
 		var skipFields = [ "message", "filterClass" ];
 		if ( isSimpleValue( arguments.extraInfo ) ) {
 			return true;
-		} else if ( isStruct( arguments.extraInfo ) && arguments.extraInfo.keyArray().len() == 0 ) {
-			return true;
+		} else if ( isStruct( arguments.extraInfo ) ){
+				if(arguments.extraInfo.keyArray().len() == 0 ) {
+					return true;
+				} else {
+					systemOutput("It is a struct but not empty");
+					return false;
+				}
 		} else if ( isArray( arguments.extraInfo ) ) {
 			return true;
 		} else {
